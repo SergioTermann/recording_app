@@ -1,50 +1,53 @@
-# Glimpse · iPhone 与 Mac 的声音档案
+# Glimpse · A Voice Archive for iPhone and Mac
 
-## Mac 1.1 / iPhone 1.6.2：Markdown 写作工作区与纯图形图标
+A native SwiftUI app for recording, on-device Mandarin transcription, Markdown editing, and local-network archiving. Supports iOS 17 or later and macOS 14 or later. Optional AI daily summaries use DeepSeek.
 
-电脑版以文稿编辑为主：左侧紧凑的分类与文稿列表，中间大幅 Markdown 编辑区，录音收进工具栏。选择录音直接编辑，支持标题、粗体、斜体、列表、待办、引用、代码块、链接的快捷插入与语法着色，提供「编辑 / 双栏 / 预览」。预览支持常见块级语法、表格与行内格式；原始 HTML 按文本显示，不执行脚本、不加载远程图片。此内置预览覆盖常用 Markdown 子集，不是完整 CommonMark/GFM 引擎。
+The app interface currently uses Chinese labels. English labels in the instructions below describe their Chinese equivalents; on-disk folder names remain unchanged.
 
-输入后约 0.8 秒自动保存；Cmd-S 立即保存。原样保留 Markdown 语法到同目录 `.md` 与原 TXT，同时更新转写状态及每日总结源文。每次输入立即保存恢复草稿，自动保存成功后清理；切换文稿保存，意外退出后恢复草稿。输入法组词期间不落入半成品。导出菜单支持独立 `.md` 文件。现有录音文字可直接打开，原始录音不变。
+## Mac 1.1 / iPhone 1.6.2: Markdown Workspace and an Icon Without Lettering
 
-图标更换为深海蓝珐琅、古金钢笔尖、放射雕纹和装饰艺术边框；**图标内没有任何文字或字母缩写**。Mac 和 iPhone 均已安装此版资源。
+The Mac app now centers on writing: a compact category and document list on the left, a spacious Markdown editor in the middle, and recording controls in the toolbar. Select a recording to edit its transcript directly. The editor offers shortcuts and syntax highlighting for headings, bold, italic, lists, tasks, quotes, code blocks, and links, with Edit, Split, and Preview modes. Preview supports common block syntax, tables, and inline formatting. Raw HTML is displayed as text; scripts are not executed and remote images are not loaded. The built-in renderer supports a common Markdown subset, rather than the full CommonMark or GFM specification.
 
-验证：Markdown Unicode/UTF-16 选区、跨行格式、代码围栏、预览标题/列表/待办/代码/表格测试通过；独立 Mac 持久化测试验证即时恢复草稿、自动保存、MD/TXT/状态一致、重新打开和清空文字。实际 Mac UI 验证大编辑区输入、自动保存、重启保留和双栏预览；文件移动测试包含 `.md` 与草稿副本。图标检查了大图及 180/120/60 像素预览，两端签名构建通过。
+Changes are saved automatically about 0.8 seconds after typing; Cmd-S saves immediately. Markdown syntax is preserved in both a companion `.md` file and the original TXT file, while transcription state and daily-summary source text are updated. Each edit immediately writes a recovery draft, which is cleared after a successful autosave. Switching documents saves changes, and drafts can be recovered after an unexpected exit. In-progress input-method composition is not saved as incomplete text. The export menu supports standalone `.md` files. Existing transcripts open directly, and original audio remains unchanged.
 
-新增实现：`GlimpseMac/MarkdownEditor.swift`、`GlimpseMac/MarkdownSupport.swift`；测试位于 `Tests/MarkdownTests.swift` 与 `Tests/MarkdownPersistenceTests.swift`。图标源稿 `scripts/render-icon.py`，当前资源 `design/AppIcon-glimpse-deco.png`。
+The icon now features deep blue enamel, an antique gold fountain-pen nib, radial engraving, and an Art Deco border. **It contains no text or initials.** Both Mac and iPhone assets have been updated.
 
+Recorded validation: tests passed for Unicode/UTF-16 selections, multiline formatting, code fences, and preview rendering of headings, lists, tasks, code, and tables. Separate Mac persistence tests covered immediate recovery drafts, autosave, consistency across MD/TXT/state files, reopening, and clearing text. Mac UI checks covered typing in the expanded editor, autosave, persistence after relaunch, and split preview. File-move tests included `.md` files and draft copies. Icon checks covered full-size and 180/120/60-pixel previews; signed builds passed on both platforms.
 
-## Mac 1.0.1 / iPhone 1.6.1：局域网自动归档与桌面文字编辑
+Implementation: `GlimpseMac/MarkdownEditor.swift` and `GlimpseMac/MarkdownSupport.swift`. Tests: `Tests/MarkdownTests.swift` and `Tests/MarkdownPersistenceTests.swift`. Icon source: `scripts/render-icon.py`; current artwork: `design/AppIcon-glimpse-deco.png`.
 
-Mac 应用已安装在 `~/Applications/Glimpse.app`。Mac 界面包含全部录音、日常记录、idea、手机归档和每日总结；支持 Mac 录音、播放、文字识别、搜索、文字编辑、TXT/音频导出和 Finder 定位。原生 macOS 目标为 `GlimpseMac`，支持 macOS 14 及以上；macOS 26 使用本机 SpeechTranscriber，旧版本使用本机 SFSpeechRecognizer（需要系统语言资源支持）。
+## Mac 1.0.1 / iPhone 1.6.1: Automatic LAN Archiving and Desktop Transcript Editing
 
-### 自动归档
+The development installation placed the Mac app at `~/Applications/Glimpse.app`. The Mac interface includes All Recordings, Daily Notes, idea, Phone Archive, and Daily Summaries. It supports recording, playback, transcription, search, text editing, TXT/audio export, and revealing files in Finder. The native macOS target is `GlimpseMac`, supporting macOS 14 or later. macOS 26 uses on-device SpeechTranscriber; earlier supported versions use on-device SFSpeechRecognizer and require system language resources.
 
-1. 两台设备连接同一局域网，Mac 打开 Glimpse → 连接手机 → 显示配对二维码。
-2. iPhone 打开 Glimpse → Mac 归档 → 扫描 Mac 配对二维码，允许相机及本地网络权限。
-3. 配对后，两端打开 App 时自动归档所有未归档录音与完成的文字稿。手机原文件保留；后台或锁屏可能暂停，回到前台自动重试。
-4. 如 Bonjour 发现受网络影响，可使用新版二维码包含的局域网 IP，或在手机配对页输入 Mac 页面显示的 IP。默认端口 TCP 49743。若 IP 改变且 Bonjour 不可用，需重新扫码或输入新 IP。
+### Automatic Archiving
 
-归档路径：`~/Documents/Glimpse/手机归档/YYYY-MM-DD/日常记录或idea/设备ID_录音ID/`。每条包含 `recording.m4a`、已有的 `recording.txt`、文字状态文件及 `archive.json`。保留录音开始日期、时长和首次归档分类；之后的手机分类调整和删除不会改动已有 Mac 档案。Mac 自录文件位于 `~/Documents/Glimpse/Mac 录音/分类/`。
+1. Connect both devices to the same local network. On the Mac, open Glimpse → Connect Phone → Show Pairing QR Code.
+2. On the iPhone, open Glimpse → Mac Archive → Scan Mac Pairing QR Code. Grant camera and local-network permissions.
+3. Once paired, unarchived recordings and completed transcripts are archived automatically while both apps are open. Original files remain on the phone. Transfers may pause in the background or when locked and retry when the app returns to the foreground.
+4. If Bonjour discovery is unavailable, use the LAN IP included in the newer QR code, or enter the IP shown on the Mac into the phone's pairing screen. The default port is TCP 49743. If the IP changes and Bonjour is unavailable, scan again or enter the new IP.
 
-- 录音和文字仅在局域网传输。二维码承载随机 256 位配对密钥，存于两端钥匙串；TLS 1.2 PSK + AES-GCM 双向认证与加密。未提供明文或关闭校验的后门。不要公开配对二维码；可在 Mac 重置配对。
-- Bonjour `_glimpse-sync._tcp` 自动发现，禁用蜂窝和点对点接口；同一 Wi-Fi 的访客隔离、VPN 或防火墙可能影响连接。Mac 需保持 App 运行、电脑唤醒。
-- 每次接收先写隐藏临时目录，校验字节数与 SHA-256 后原子提交，落盘后才回复完成。连接中断仅重传未完成文件，已归档音频校验后跳过，不会生成重复副本。
-- 录音后续完成识别时，文字会自动补传。Mac 已修改文字不会被手机版本覆盖，手机新版另存 `recording.phone.txt`。这是从手机到 Mac 的归档，不是双向编辑同步。
-- 当前每条录音最大 4 GiB、文字最大 4 MiB；超过限制明确报错。单次只接受一个已配对客户端会话。
+Archive layout: `~/Documents/Glimpse/手机归档/YYYY-MM-DD/<category>/<deviceID>_<recordingID>/`, where the category is `日常记录` or `idea`. Each entry contains `recording.m4a`, `recording.txt` when available, a transcript state file, and `archive.json`. The recording's start date, duration, and category at initial archive time are preserved. Later category changes or deletions on the phone do not alter existing Mac archives. Recordings made on the Mac are stored under `~/Documents/Glimpse/Mac 录音/<category>/`.
 
-### 编辑文字与每日总结
+- Audio and transcripts transfer only over the local network. The QR code carries a random 256-bit pairing key stored in each device's Keychain. TLS 1.2 PSK with AES-GCM provides mutual authentication and encryption. There is no plaintext fallback or verification bypass. Keep pairing QR codes private; pairing can be reset on the Mac.
+- Bonjour discovery uses `_glimpse-sync._tcp`; cellular and peer-to-peer interfaces are disabled. Guest-network isolation, VPNs, or firewalls may affect connectivity. The Mac must remain awake with the app running.
+- Incoming files are written to a hidden temporary directory, checked for byte count and SHA-256, and committed atomically. Completion is acknowledged only after persistence. After an interruption, only incomplete files are retransmitted; verified audio already in the archive is skipped without creating duplicates.
+- Transcripts are transferred automatically when transcription finishes later. Phone updates do not overwrite text edited on the Mac; the incoming version is saved separately as `recording.phone.txt`. This is phone-to-Mac archiving, not bidirectional editing synchronization.
+- Each recording is currently limited to 4 GiB of audio and 4 MiB of text. Exceeding a limit produces an explicit error. Only one paired client session is accepted at a time.
 
-在 Mac 选中录音，点击右侧 **编辑文字**，修改后点 **保存文字并更新 TXT**。没有识别结果时也能手动补写；保存会停止该条正在进行的识别，避免迟到结果覆盖人工编辑。切换记录时，未保存草稿在当前运行期间保留。退出前需保存。
+### Transcript Editing and Daily Summaries
 
-每日总结复用手机端的日期分组、缓存和 DeepSeek 处理。Mac 的 API Key 需要在「每日总结 → 连接 DeepSeek」单独填写，存于 Mac 钥匙串；手机密钥不会随档案传输。Mac 开启 AI 后会发送本机已结束日期的文字到 DeepSeek。Mac 休眠或退出时不会执行，运行时每分钟检查并在下次启动补齐。文档位于 `~/Documents/Glimpse/每日总结/`。
+In this release, select a recording on the Mac, click **Edit Text**, then **Save Text and Update TXT**. Text can also be entered manually when no transcript exists. Saving stops any transcription in progress for that recording so that a late result cannot overwrite manual edits. Unsaved drafts survive switching between recordings within the current session; save before quitting. Mac 1.1 introduces the autosave workflow described above.
 
-### 验证与构建
+Daily summaries reuse the phone's date grouping, cache, and DeepSeek processing. Enter the Mac's API key separately under Daily Summaries → Connect DeepSeek. It is stored in the Mac Keychain; the phone's key is not transferred with archives. When AI is enabled, the Mac sends local transcript text for completed days to DeepSeek. Processing does not run while the Mac is asleep or the app is closed. While running, the app checks once per minute and catches up on the next launch. Documents are stored in `~/Documents/Glimpse/每日总结/`.
 
-- 两端签名构建通过。共享转写与每日总结回归测试通过（模拟器跳过真实中文识别）；新增手动编辑优先、外部文字补传重新加载测试通过。
-- `Tests/ArchiveIntegrationTests.swift` 覆盖原子归档、中断清理、摘要校验、重复跳过、补传文字、本地编辑冲突、路径校验、重启恢复；真实 TLS 分块传输通过，错误密钥被拒绝。
-- 用户 iPhone 向 Mac 的真实局域网归档已完成 1 条，接收文件字节数和 SHA-256 与手机一致。
-- Mac 实际 UI 测试在独立虚构资料库完成：打开编辑、修改、保存，检查 TXT 和文字状态文件一致。没有修改用户日记。Mac 实际麦克风录音与真实中文识别尚未单独做真机声学测试。
-- 图标统一为酒红珐琅、旧金卷草和细密珠边，原生脚本绘制，未调用图像生成 API；预览 `preview/app-icon.png`。此历史图标已由 1.1 / 1.6.2 纯图形钢笔尖版替代。
+### Validation and Build
+
+- Signed builds passed on both platforms. Shared transcription and daily-summary regression tests passed, with real Mandarin recognition skipped on the simulator. Tests for manual-edit precedence and reloading subsequently received transcripts also passed.
+- `Tests/ArchiveIntegrationTests.swift` covers atomic archiving, interruption cleanup, digest verification, duplicate skipping, later transcript transfers, local-edit conflicts, path validation, and restart recovery. Real TLS chunked transfer passed; an incorrect key was rejected.
+- One real iPhone-to-Mac LAN archive transfer completed, with matching byte counts and SHA-256 hashes on both devices.
+- Mac UI testing used an isolated synthetic library to open, edit, and save text and verify consistency between TXT and transcript state. No personal diary was modified. Actual Mac microphone recording and Mandarin recognition have not yet received a separate end-to-end acoustic test on physical hardware.
+- This release used a burgundy enamel icon with antique gold scrollwork and a beaded border, rendered by project scripts without an image-generation API. The preview path is `preview/app-icon.png`. The historical design was superseded by the pen-nib icon in Mac 1.1 / iPhone 1.6.2.
 
 ```sh
 xcodebuild -project QuickRecord.xcodeproj -scheme GlimpseMac -configuration Release \
@@ -55,151 +58,152 @@ xcrun swiftc -swift-version 5 -parse-as-library Shared/ArchiveCore.swift \
 /tmp/glimpse-archive-tests
 ```
 
-调试目标支持 `GLIMPSE_TEST_ROOT` 隔离资料库，且禁用网络接收；Release 不包含此环境变量入口。源码包不包含密钥、用户录音、配对凭证或构建产物。
+Debug builds support `GLIMPSE_TEST_ROOT` for an isolated library and disable network receiving in that mode. Release builds do not expose this environment-variable override. The source distribution excludes API keys, personal recordings, pairing credentials, and build artifacts.
 
+## 1.5.3: Antique Enamel Medallion Icon
 
-## 1.5.3：古董珐琅牌图标
+An ivory background, burgundy oval enamel medallion, antique gold rope border, and raised handwritten G. Rendered using the project's Python material scripts without an image-generation API. Previews were checked at 180/120/60 pixels. The installed asset was an opaque 1024×1024 RGB PNG. Render script: `scripts/render-icon.py`; artwork: `design/AppIcon-glimpse-locket.png`; preview: `preview/app-icon.png`. The previous starburst script is archived at `design/render-icon-jewel.py`.
 
-采用象牙白底、酒红椭圆珐琅牌、旧金绳纹镶边与立体手写 G。项目原生 Python 材质脚本绘制，未调用图像生成 API；检查了 180/120/60 像素预览。安装资源为 1024×1024 不透明 RGB PNG。源稿 `scripts/render-icon.py`，图标 `design/AppIcon-glimpse-locket.png`，预览 `preview/app-icon.png`。上一版星芒脚本存档于 `design/render-icon-jewel.py`。
+## 1.5.2: Burgundy Enamel Jewelry Icon
 
-## 1.5.2：酒红珐琅珠宝图标
+Redesigned in the selected vintage-jewelry style: burgundy enamel, an antique gold starburst setting, a garnet cabochon, and fine engraving. Rendered with project Python scripts using Pillow, NumPy, and SciPy, without an image-generation API. Previews were checked at 180/120/60 pixels; the installed asset was an opaque 1024×1024 RGB PNG. Render script: `scripts/render-icon.py`; artwork: `design/AppIcon-glimpse-jewel.png`; preview: `preview/app-icon.png`. The previous design is archived at `design/AppIcon-green-crest.png`.
 
-按用户选定的复古珠宝方向重绘：酒红珐琅底、旧金星芒镶座、石榴红弧面宝石及细雕纹。采用项目原生 Python 材质绘制（Pillow、NumPy、SciPy），未使用图像生成 API。已检查 180/120/60 像素预览，安装资源为 1024×1024 不透明 RGB PNG。源稿 `scripts/render-icon.py`，图标 `design/AppIcon-glimpse-jewel.png`，预览 `preview/app-icon.png`。上一版存档于 `design/AppIcon-green-crest.png`。
+## 1.5.1: Glimpse Name and New Icon
 
-## 1.5.1：Glimpse 与新图标
+Renamed the app to Glimpse and updated its home-screen name, main heading, permission prompts, shortcut instructions, and file-location guidance. Existing app identifiers and data directories were retained so that installing over an earlier version preserves recordings, summaries, Keychain entries, and Action button bindings.
 
-App 更名为 Glimpse，更新桌面名称、首页标题、权限提示、快捷指令说明和文件位置说明。沿用现有应用标识与数据目录，覆盖安装保留录音、总结、钥匙串及操作按钮绑定。
+The icon was redesigned with dark green leather, an antique gold Baskerville G monogram, laurel branches, and an engraved oval frame. Rendered with project Python scripts and material shading, without an image-generation API. Previews were checked at 180/120/60 pixels; the final asset was an opaque 1024×1024 RGB PNG. Render script: `scripts/render-icon.py`; artwork: `design/AppIcon-glimpse.png`; preview: `preview/app-icon.png`.
 
-图标重绘为墨绿皮革、旧金 Baskerville G 字徽记、月桂枝与雕花椭圆边框。使用项目原生 Python 绘制脚本与材质渲染，无图像生成 API 调用；检查了 180/120/60 像素预览，最终资源为 1024×1024 不透明 RGB PNG。源稿 `scripts/render-icon.py`，图标 `design/AppIcon-glimpse.png`，预览 `preview/app-icon.png`。
+## 1.5: Automatic AI Daily Summaries
 
-## 1.5：按日期自动 AI 每日总结
+Added Daily Summaries to the home screen. Open it, select Connect DeepSeek, enter your own API key on the phone, and select Save Key and Enable Automatic AI Summaries. Credentials and model access are first validated through DeepSeek's model-list endpoint, then stored in the device Keychain. Do not put keys in source code or send them in chat. The same screen lets you disconnect and remove the local key.
 
-首页新增「每日总结」。进入后点「连接 DeepSeek」，在手机上填入自己的 API Key，并点「保存密钥并开启自动 AI 总结」。先通过 DeepSeek 模型列表验证凭证和模型权限，再存入此设备钥匙串；不要将密钥放入源码或发送到聊天。可在同一入口断开并删除本机密钥。
+After a day ends, transcribed Daily Notes and idea entries are sent to DeepSeek to produce Today's Highlights, Life Notes, Ideas, and Explicit To-Dos, followed by the full original text for that day. Generated UTF-8 TXT files appear in Files → On My iPhone → Glimpse → `每日总结/YYYY-MM-DD 每日总结.txt`. The app supports viewing by date, copying, and sharing/exporting.
 
-每天结束后，把已转写的日常记录和 idea 交给 DeepSeek 提炼「今日重点 / 生活记录 / idea / 明确待办」，并附当天完整原文。生成的 UTF-8 TXT 位于「文件 → 我的 iPhone → Glimpse → 每日总结 / YYYY-MM-DD 每日总结.txt」，App 内支持按日期查看、复制、分享导出。
+- Only text, categories, and source timestamps are sent to `https://api.deepseek.com/chat/completions`; audio is not sent. The configured model is `deepseek-flash` in non-thinking mode. Usage is billed to your DeepSeek account. Long text is summarized in chunks and then merged, potentially requiring multiple calls. HTTP redirects are rejected, and requests use an ephemeral session without caching.
+- iOS controls background execution, so generation at exactly midnight is not guaranteed. BGAppRefresh requests execution no earlier than 00:01 the next day; returning to the foreground triggers catch-up processing. The app also checks when it stays in the foreground across midnight. Disabled background refresh, force-quitting, loss of connectivity, or task expiration can delay generation.
+- Dates are assigned by recording start time, including recordings that cross midnight. The archive time zone is fixed to the device time zone when summaries are first used and is displayed in the interface, preventing historical dates from shifting during travel.
+- No final report is generated for the current day, and days without recordings do not produce empty documents. Initial activation also processes existing past days. Older untranscribed recordings join the queue when automatic transcription is allowed and the app is in the foreground. Failed transcription must be retried from the original recording.
+- If some transcripts are missing, the app first creates a source-text document explicitly marked AI Summary Pending. It waits for all transcripts before requesting an AI summary, so incomplete content is not presented as a complete report.
+- Model results are cached by source-text fingerprint to avoid repeated calls for unchanged content. Editing text, moving categories, or deleting recordings triggers regeneration. Deleting all recordings for a day removes documents generated by this feature for that day, while leaving other user-created files in the directory untouched. Previously shared copies do not update automatically.
+- API errors, insufficient balance, rate limits, empty responses, and truncated responses are not marked complete; a retry option is shown. Canceled tasks do not publish partial results. AI output can be incorrect; check important details against the original text appended to the document.
 
-- 仅发送文字、分类和来源时间到 `https://api.deepseek.com/chat/completions`，不发送音频。当前模型为官方文档列出的 `deepseek-flash`，非思考模式。按用户 DeepSeek 账户计费；长文本会分段总结再合并，可能产生多次调用。禁止 HTTP 重定向，使用无缓存临时网络会话。
-- iOS 决定后台执行时间，不能保证 00:00 准时运行。BGAppRefresh 最早在次日 00:01 申请运行，返回前台会补齐；App 保持前台跨午夜时也会检查。系统拒绝后台刷新、强退、断网或任务到期均可能延后生成。
-- 日期按录音开始时间归档，包括跨午夜的长录音。归档时区固定为首次使用总结功能时的设备时区，页面会显示，避免旅行时历史日期漂移。
-- 当天不生成最终日报，没有录音的日期不生成空文档。首次启用也处理已有历史日期。旧录音尚未识别时，在允许自动转写且 App 位于前台时加入转写队列；识别失败的录音需要在原录音入口重试。
-- 部分文字缺失时，先生成明确标注「AI 总结待生成」的原文文档；全部转写完成后再请求 AI，避免将缺失内容当作完整总结。
-- 根据原文指纹缓存模型结果，内容未变化时不重复调用；编辑文字、移动分类或删除录音后重新生成。删除一天全部录音时清理本功能生成的对应文档，不删除该目录中用户自己的其他文件。已分享出去的副本不随之更新。
-- API 失败、余额不足、限流、空回复或截断回复不保存为完成状态，显示重试入口。任务取消后不发布半截结果。AI 结果仍可能有误，重要信息须对照文档末尾原文。
+Implementation: `DailySummary.swift` handles date grouping, documents, state, AI caching, and the interface; `DailySummaryAI.swift` handles DeepSeek requests and Keychain access; `DailySummaryScheduler.swift` handles system background refresh.
 
-新增实现：`DailySummary.swift`（日期分组、文档和状态、AI 缓存及界面）、`DailySummaryAI.swift`（DeepSeek 调用和钥匙串连接）、`DailySummaryScheduler.swift`（系统后台刷新）。
+Recorded validation: six daily-summary tests passed, covering midnight and daylight-saving boundaries, both categories, pending transcription, cache/edit updates, failure retries, cancellation, file cleanup, and chunk completeness. Three UI tests passed, covering daily documents and connection controls, sharing/export, recording regressions, and transcript editing. Model-logic tests used mocked responses. On September 29, 2026, real DeepSeek model access and a synthetic-record summary were tested on an iPhone 15 Pro Max; all four summary sections were verified. The authorized key was stored in the device Keychain and the one-time transfer file was deleted. The physical-device test did not read personal diaries, and credentials are absent from source code and app bundles. Exact midnight execution has not been verified because background timing depends on system scheduling.
 
-验证：6 项每日总结测试通过，覆盖午夜和夏令时边界、两类记录、待转写状态、缓存/编辑更新、失败重试、取消、文件清理以及分段完整性；3 项 UI 测试通过，覆盖每日文档和连接入口、分享导出、录音回归及文字编辑。模型逻辑测试使用模拟响应；2026-09-29 已在用户 iPhone 15 Pro Max 上完成真实 DeepSeek 模型权限验证与虚构记录总结测试，四个总结章节验证通过。用户授权的密钥已保存至设备钥匙串，一次性传输文件已删除。真机测试不读取用户日记；凭证不包含在源码或安装包中。后台午夜触发受系统调度限制，未宣称已验证准时执行。
+Before reproducing simulator UI tests, run `python3 scripts/seed-daily-summary-test.py` and `python3 scripts/seed-transcript-test.py`. These scripts create synthetic data only in the simulator; they do not write to the phone or read personal diaries.
 
-复现模拟器 UI 测试前运行 `python3 scripts/seed-daily-summary-test.py` 和 `python3 scripts/seed-transcript-test.py`。它们只在模拟器准备合成数据，不写入手机或读取用户日记。
+API reference: [DeepSeek Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion).
 
-接口依据：[DeepSeek Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion)。
+## 1.4.3: Graphite and Titanium Icon
 
-## 1.4.3：石墨与钛金属图标
+The icon used a matte graphite panel, recessed circular base, brushed titanium waveform, and dark red indicator. Materials were rendered using height-field normals, directional lighting, soft shadows, contact shadows, and subtle surface textures. The neon halo and orbit were removed. Small home-screen previews were checked; the icon was an opaque 1024×1024 RGB PNG. The release used `scripts/render-icon.py` and `preview/app-icon.png`; the previous version is archived at `design/AppIcon-neon.png` and `design/render-icon-neon.py`. The white in-app theme was unchanged.
 
-图标采用哑光石墨面板、凹入圆形底座、拉丝钛金属声波与暗红指示灯。通过高度场法线、方向光、柔和投影、接触阴影和细微表面纹理绘制材质，移除霓虹光环和轨道。检查了桌面小尺寸预览，图标为 1024×1024 不透明 RGB PNG。当前源稿为 `scripts/render-icon.py`，预览为 `preview/app-icon.png`；上一版保存在 `design/AppIcon-neon.png` 和 `design/render-icon-neon.py`。App 内白色主题保持不变。
+## 1.4.2: Sci-Fi Waveform Core
 
-## 1.4.2：科幻声波核心
+Redesigned the home-screen icon with a deep-space blue background, ice-blue waveform, cyan-to-purple halo, and tilted orbit. Lighting, glow, and curved surfaces were rendered programmatically into an opaque 1024×1024 PNG. Previews were checked at 180/120/60 pixels. The app retained its white theme.
 
-桌面图标重绘为深空蓝底、冰蓝声波、青紫渐变光环与倾斜轨道。使用程序绘制光照、柔光与曲面，输出 1024×1024 不透明 PNG；检查了 180/120/60 像素预览。App 内保持白色主题。
+The release used `scripts/render-icon.py`, previewed at `preview/app-icon.png`, with the installed asset at `QuickRecord/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. `design/AppIcon-paper.svg` and `design/render-icon-paper.py` preserve the earlier sticky-note design as historical assets.
 
-当前设计源为 `scripts/render-icon.py`；预览为 `preview/app-icon.png`；安装资源为 `QuickRecord/Assets.xcassets/AppIcon.appiconset/AppIcon.png`。`design/AppIcon-paper.svg` 和 `design/render-icon-paper.py` 保留上一版便签设计，仅作历史存档。
+## 1.4.1: Voice Note Icon
 
-## 1.4.1：声音便签图标
+Redesigned the home-screen icon with a warm white background, a coral folded-corner note, and a white waveform, using subtle gradients and soft shadows. The icon was an opaque 1024×1024 PNG, with rounded corners applied by iOS. Previews were checked at 180/120/60 pixels.
 
-重新设计桌面图标：暖白底色、珊瑚红折角便签、白色声波，采用轻渐变与柔和阴影。应用图标为 1024×1024 不透明 PNG，由 iOS 裁切圆角；附 180/120/60 像素预览检查。
+The note design is archived at `design/AppIcon-paper.svg` with `design/render-icon-paper.py`. At the time of the release, rendering used `scripts/render-icon.py` with Pillow and NumPy, the installed asset was `QuickRecord/Assets.xcassets/AppIcon.appiconset/AppIcon.png`, and the preview was `preview/app-icon.png`. The artwork was rendered programmatically without an image-generation API.
 
-设计源稿：`design/AppIcon.svg`；渲染脚本：`scripts/render-icon.py`（Pillow + NumPy）；安装资源：`QuickRecord/Assets.xcassets/AppIcon.appiconset/AppIcon.png`；预览：`preview/app-icon.png`。本次采用程序绘制，未调用图像生成 API。
+## 1.4: White Theme
 
-## 1.4：白色主题
+Removed the upper-right settings button and the in-app settings page. The main screen, transcript screen, and editor now share a light appearance: white backgrounds, pale gray cards, dark text, and orange-red action buttons. The compact recording card from 1.3.1, category-based saving, built-in microphone recording, and automatic transcription were retained. Microphone or speech-permission errors still provide a route to iOS Settings.
 
-首页移除右上角设置按钮和 App 内设置页。主界面、录音文字及编辑页面统一使用浅色外观：白色背景、浅灰卡片、深色文字和橙红色操作按钮。保持 1.3.1 的紧凑录音卡片，以及分类保存、手机麦克风录音和自动转文字功能。系统麦克风或语音权限异常时，仍可从错误提示进入 iOS 系统设置处理。
+The sections below describe earlier releases. References to in-app settings in those releases are historical; that screen was removed in 1.4.
 
-下方为历次版本说明；旧版本提到的 App 内设置入口在 1.4 已移除。
+## 1.3.1: Compact Recording Card
 
-## 1.3.1：紧凑录音卡片
+Reduced the timer font size, waveform height, and vertical spacing, making the recording card about one-third shorter. The record button retained a 76-point touch target, leaving more room for recordings on the home screen.
 
-缩小录音卡片的计时字号、波形高度与上下间距，整体高度减少约三分之一。录音按钮仍有 76 点点击区域，首页能显示更多录音列表。
+## 1.3: Daily Notes / idea Categories
 
-## 1.3：日常记录 / idea 分类保存
+- Removed the press-and-hold setup card from the home screen. Settings remained accessible from the upper-right corner in this release.
+- Choose Daily Notes (`日常记录`) or `idea` under Save To. You can switch before stopping a recording; audio and transcripts are saved in the corresponding physical folder.
+- The app remembers the last folder, including when recording starts through the Action button.
+- The list shows only the current folder. The ellipsis menu moves a recording, its TXT file, and transcription state to the other folder.
+- On first launch after upgrading, older recordings are migrated to Daily Notes. Migration preserves file contents and assigns a new filename on conflicts instead of overwriting existing files.
+- Both `日常记录` and `idea` folders are visible under Files → On My iPhone → Glimpse → Recordings.
 
-- 首页移除「长按一下，就开始」设置卡片，右上角仍可查看设置。
-- 在「保存到」选择「日常记录」或「idea」。停止录音前可以切换，录音和识别文字保存到对应的真实文件夹。
-- App 记住上次的文件夹；使用操作按钮启动录音时也沿用该选择。
-- 录音列表只显示当前文件夹。录音右侧「…」可将录音连同 TXT、识别状态移到另一个文件夹。
-- 旧版本录音首次启动时归入「日常记录」。迁移保留原文件内容，遇到同名文件时生成新文件名，不覆盖已有文件。
-- 在「文件 → 我的 iPhone → Glimpse → Recordings」里可看到「日常记录」和「idea」两个文件夹。
+Recorded validation: category migration, moving audio with transcripts, and filename-conflict protection passed. UI tests covered switching to idea during recording, stopping and saving, playback, retaining the folder after relaunch, and viewing, editing, and exporting text.
 
-验证：分类迁移、录音与文字一起移动、同名保护测试通过；录音期间切换到 idea、停止保存、回放、重启保留文件夹，以及文字查看编辑导出 UI 测试通过。
+## 1.2: Always Use the iPhone Microphone
 
-## 1.2：固定使用手机麦克风
+Before recording, the app activates its audio session, explicitly selects `.builtInMic`, and checks the actual input route. The recording session does not enable Bluetooth HFP input; the phone microphone remains selected when wired or Bluetooth headphones are connected. Input is checked again after recording starts and reselected and validated when the system audio route changes. If the built-in microphone cannot be restored, the app stops, saves, and displays an error instead of continuing with a headset microphone.
 
-录音前启用音频会话，显式选择 `.builtInMic`，并检查实际输入路由。录音会话不启用蓝牙 HFP 输入；连接有线或蓝牙耳机时仍选择手机麦克风。录音启动后再检查一次输入，系统音频路由变化时重新选择并校验；不能切回内置麦克风时停止并保存、显示错误，不以耳机麦克风继续录音。
+The main screen identifies the input as the iPhone's built-in microphone. Playback follows the system output route without overriding headphone preferences. System route-change notifications have some latency, so uninterrupted audio at the exact moment of a hardware change is not guaranteed.
 
-主界面显示「iPhone 内置麦克风」。回放使用系统播放路由，不强制改变耳机回放偏好。系统路由变化通知存在响应延迟，不能承诺在硬件切换的瞬间完全没有音频间隙。
+Physical-device input-route testing passed, returning the iPhone microphone with port type `.builtInMic`; simulator route testing also passed. Connection and disconnection scenarios have not been individually verified for every Bluetooth or wired headset model.
 
-真机输入路由测试通过，实际返回「iPhone麦克风」且端口类型为 `.builtInMic`；模拟器路由测试也通过。尚未逐一验证不同型号蓝牙耳机、有线耳机的插拔场景。
+## 1.1: Automatic Transcription and TXT Export
 
-## 1.1：自动转文字与 TXT 导出
+- Automatic transcription after recording is enabled by default for Mandarin. Saved recordings enter a foreground transcription queue; completion automatically creates a UTF-8 `.txt` file.
+- Tap Text beneath a recording to view, copy, or edit the transcript. Export TXT saves it to Files or shares it with another app. Saving edits also updates the TXT file.
+- Recordings and companion TXT files are available under Files → Browse → On My iPhone → Glimpse → Recordings. Back up important content before uninstalling.
+- In this release, older recordings were not automatically processed in bulk; tap Transcribe to process one. Failed recognition preserves the audio and offers Retry Transcription.
+- This release allowed automatic transcription to be disabled in the upper-right settings screen; already queued tasks continued.
+- On iOS 26 or later, the app prefers system SpeechTranscriber for on-device processing of long recordings. The Chinese model may need to be downloaded on first use. Other supported versions use SFSpeechRecognizer with on-device recognition required and audio split into 45-second segments. Segment boundaries can affect individual words. If an on-device Chinese model is unavailable, the app reports this and never silently uploads audio for recognition.
+- Keep the app in the foreground during transcription. Leaving the app, locking the screen, or starting a new recording pauses processing; returning retries that recording from the beginning. Incomplete text is not exported as a finished TXT transcript.
+- Recognition may be inaccurate; verify important content against the original audio. This release did not include speaker diarization, translation, or summaries. Optional daily summaries were added in 1.5.
 
-- 默认开启「停止录音后自动转文字」，识别普通话。录音保存后在前台排队识别，完成后自动生成 UTF-8 `.txt` 文件。
-- 在录音下方点「文字」，可查看、复制、修改识别结果，或通过「导出 TXT」存入文件、发送到其他 App。修改并保存会同步更新 TXT。
-- 「文件 → 浏览 → 我的 iPhone → Glimpse → Recordings」中可找到录音和对应 TXT。卸载前请备份重要内容。
-- 以前的录音不会擅自批量处理，点「转文字」即可识别。识别失败时保留原录音，可点「重新识别」。
-- 在右上角设置里可关闭自动转文字；已排队任务仍会继续。
-- iOS 26 及以上优先使用系统 SpeechTranscriber，本机处理长录音，首次可能需下载中文模型。其他受支持系统使用 SFSpeechRecognizer，并强制设备端识别，按 45 秒分段；分段边界可能影响个别词语。不支持本机中文模型时会提示，绝不静默改为上传录音。
-- 请在文字生成期间保持 App 在前台。离开 App、锁屏或开始新录音时暂停，返回后从该条录音开头重试。尚未完成的文字不会作为完整 TXT 导出。
-- 识别结果可能有误，重要内容请对照原录音核对。目前不包含说话人区分、翻译或摘要。
+Implementation: `Transcription.swift` handles on-device recognition, queuing, state, and TXT persistence; `TranscriptView.swift` handles viewing, editing, copying, and exporting.
 
-新增源码：`Transcription.swift`（本机识别、任务排队、状态与 TXT 持久化）、`TranscriptView.swift`（查看、编辑、复制、导出）。
+Recorded validation: three transcription state/persistence tests and three UI tests passed, including recording regressions, transcript editing, copying, and system sharing. Simulator samples are prepared with `python3 scripts/seed-transcript-test.py`; their text is UI test data, not a real recognition result. Physical-device recognition tests use a fixed system-synthesized Mandarin sample and do not read personal recordings.
 
-新增验证：3 项转写状态/持久化测试通过；3 项 UI 测试通过（含原录音回归、文字编辑、复制、系统分享）。模拟器界面样本通过 `python3 scripts/seed-transcript-test.py` 准备，样本文字用于 UI 测试，不代表真实识别结果。真机识别测试使用系统合成的固定中文语音，不读取用户录音。
+On September 29, 2026, a recognition test passed on an iPhone 15 Pro Max running iOS 26.6.2. System SpeechTranscriber processed a roughly nine-second fixed Mandarin sample about good weather, a 3 p.m. meeting to discuss project progress, and bringing a computer. This verified the on-device Mandarin engine; it does not establish accuracy for arbitrary accents, noise conditions, or long recordings.
 
-2026-09-29，iPhone 15 Pro Max / iOS 26.6.2 真机识别测试通过。系统 SpeechTranscriber 对约 9 秒固定中文样本返回：「今天天气很好 ，我们下午 3点开会讨论项目进度 ，请记得带上电脑。」该测试验证了本机中文识别引擎，不能据此保证任意口音、噪声或长录音的准确率。
+The app was originally built for iPhone 15 Pro Max, using native SwiftUI and supporting iOS 17 or later.
 
-为 iPhone 15 Pro Max 制作的原生 SwiftUI 录音 App，支持 iOS 17 及以上。
+**Press and hold the Action button → Run a shortcut → Open Glimpse and start recording.** Microphone permission is required on first use, and launching from the lock screen may require unlocking. The app uses public system APIs; it cannot intercept a double press of the side button, capture global volume-button presses, or change the system Action button gesture.
 
-**长按操作按钮 → 运行快捷指令 → 打开Glimpse并开始录音。** 首次需要麦克风授权，锁屏启动可能需要先解锁。App 使用公开系统接口，不能接管双击锁屏键、全局音量键或更改操作按钮的系统触发手势。
+## Install on iPhone
 
-## 安装到 iPhone
+1. Open `QuickRecord.xcodeproj` on your Mac.
+2. Connect the iPhone by cable, unlock it, and trust the Mac.
+3. Sign in with your Apple ID under Xcode → Settings → Accounts.
+4. Select the QuickRecord project → QuickRecord target → Signing & Capabilities, then choose your Team. If the bundle identifier conflicts, replace `com.zinger.quickrecord` with your own unique identifier.
+5. Select the iPhone as the run destination and click Run. Follow system prompts to enable Developer Mode, restart, and trust the developer on the phone.
+6. Open Glimpse, grant microphone permission, and make a short recording.
 
-1. 在 Mac 上打开 `QuickRecord.xcodeproj`。
-2. 用数据线连接 iPhone，解锁并信任这台 Mac。
-3. 在 Xcode 的 Settings → Accounts 中登录自己的 Apple ID。
-4. 选择 QuickRecord 项目 → QuickRecord target → Signing & Capabilities，选择自己的 Team。若提示 Bundle Identifier 冲突，将 `com.zinger.quickrecord` 改为自己的唯一标识。
-5. 选择这台 iPhone 为运行目标，点击 Run。按系统提示在 iPhone 上开启开发者模式、重启并信任开发者。
-6. 打开Glimpse，录一小段并停止，完成麦克风授权。
+Free personal development signing generally requires rebuilding and reinstalling through Xcode every seven days. Longer-term distribution requires an appropriate Apple developer signing method. This source project is not an IPA that can be installed directly.
 
-个人免费开发签名通常需要每 7 天用 Xcode 重新签名安装；长期分发需对应的 Apple 开发者签名方式。源码工程不是可直接点开安装的 IPA。
+## Configure the iPhone 15 Pro Max Action Button
 
-## 绑定 iPhone 15 Pro Max 的操作按钮
+1. Open Shortcuts on the phone and create a shortcut.
+2. Add Glimpse → Start Recording and name the shortcut “Glimpse Recording.”
+3. Open Settings → Action Button and select Shortcut.
+4. Tap Choose a Shortcut and select “Glimpse Recording.”
+5. **Press and hold the Action button above the volume buttons on the left side.** Unlock if prompted to begin recording.
+6. Once recording begins, it can continue with the screen locked. Return to the app and tap Stop and Save to finish. Running the start shortcut again does not stop or overwrite an active recording.
 
-1. 打开手机上的「快捷指令」，新建快捷指令。
-2. 添加「Glimpse → 开始录音」，将快捷指令命名为「Glimpse录音」。
-3. 打开「设置 → 操作按钮」，滑到「快捷指令」。
-4. 点「选取快捷指令」，选择「Glimpse录音」。
-5. **长按左侧音量键上方的操作按钮**，按系统要求解锁后开始录音。
-6. 开始后可以锁屏继续录制。回到 App 点「停止并保存」结束；再次触发开始指令不会停止或覆盖当前录音。
+If the app action does not appear in search, open Glimpse once first. Alternatively, create a shortcut with a URL action set to `quickrecord://record`, followed by Open URLs.
 
-如果搜索不到 App 动作，先打开Glimpse一次。也可在快捷指令中添加「URL」动作，值为 `quickrecord://record`，后接「打开 URL」动作。
+If you only need the system recorder, iPhone Settings → Action Button → Voice Memo already supports press-and-hold recording without installing this app.
 
-若只需系统录音功能，无须安装本 App：iPhone 的「设置 → 操作按钮 → 语音备忘录」已经支持长按开始录音。
+## Core Features
 
-## 已实现
+- Mono AAC/M4A recording, elapsed-time display, and input-level visualization.
+- Automatic saving when recording stops; newest-first listing, playback, system sharing/export, and deletion with confirmation.
+- A Start Recording App Intent and a URL launch entry point.
+- Background audio after recording starts, with file protection configured to allow an open recording file to remain writable after locking.
+- Microphone-permission guidance, saving on call interruptions, and encoding-error messages.
+- Local recording and transcript storage with no third-party app dependencies. Enabling AI daily summaries sends transcript text to DeepSeek. Device backups may include files; uninstalling the app deletes local recordings.
 
-- AAC / M4A 单声道录音、计时和输入音量显示。
-- 停止后自动保存，列表按时间倒序排列，支持回放、系统分享导出、确认后删除。
-- App Intent「开始录音」和 URL 启动入口。
-- 录音开始后允许后台音频，文件配置为打开期间可在锁屏后继续写入。
-- 麦克风拒绝授权提示、来电中断保存、编码失败提示。
-- 录音和转写在本机保存，无第三方依赖；启用 AI 每日总结后，转写文字会发送到 DeepSeek。设备系统备份可能包含文件；卸载 App 会删除本地录音。
+## Recorded Validation
 
-## 验证
+The results in this README describe prior development checks, not a fresh test run for each documentation update.
 
-2026-09-29 验证结果：模拟器 Debug 构建和真机 Release 构建成功；两项 UI 测试均通过。已使用本机现有个人开发签名安装至用户 iPhone 15 Pro Max（iOS 26.6.2），并通过设备工具成功启动。
+On September 29, 2026, simulator Debug and physical-device Release builds succeeded, and both initial UI tests passed. The app was installed on an iPhone 15 Pro Max running iOS 26.6.2 using the existing personal development signing identity, and launched successfully through device tools.
 
-当前个人签名有效期至 **2026-10-06 12:59（新加坡时间）**，到期需重新签名安装。麦克风首次授权、手机上的快捷指令选择、操作按钮绑定及实际锁屏行为需要在手机上完成和验证。
+That development installation's personal signing was valid until **October 6, 2026, at 12:59 Singapore time**, after which rebuilding and reinstalling is required. This date applies only to that installation. Initial microphone permission, shortcut selection, Action button binding, and actual lock-screen behavior must be completed and checked on the phone.
 
-Xcode 27 的 Siri 自然语言训练步骤输出 `Could not archive SSU artifacts`，但构建成功且 App Intent 动作元数据已生成。真机快捷指令动作的发现情况尚未确认；如搜索不到，可使用下方文档所述 URL 入口。URL 入口在首次调用时也可能显示系统「打开」确认。
+Xcode 27's Siri natural-language training step reported `Could not archive SSU artifacts`, but the build succeeded and App Intent action metadata was generated. Discovery of the shortcut action on the physical device had not been confirmed; if it does not appear, use the URL entry point described above. The first URL invocation may also trigger a system Open confirmation.
 
 ```sh
 xcodebuild -project QuickRecord.xcodeproj -scheme QuickRecord \
@@ -211,13 +215,13 @@ xcodebuild -project QuickRecord.xcodeproj -scheme QuickRecord \
   -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
 ```
 
-UI 自动化覆盖录音计时、停止保存、播放、重启后文件仍存在和设置说明。模拟器不能验证实体操作按钮、真实锁屏录音和来电打断，安装真机后还需检查这些行为。
+UI automation covered the recording timer, stopping and saving, playback, file persistence after relaunch, and settings instructions in the relevant release. The simulator cannot validate the physical Action button, actual locked-screen recording, or incoming-call interruptions; these still require device checks.
 
-## 代码入口
+## Code Entry Points
 
-- `QuickRecordApp.swift`：App 生命周期、快捷指令和 URL 入口。
-- `Recorder.swift`：麦克风权限、音频会话、录制、文件管理、回放。
-- `ContentView.swift`：中文界面及操作按钮设置引导。
-- `Info.plist`：麦克风说明、后台音频、URL scheme。
+- `QuickRecord/QuickRecordApp.swift`: app lifecycle, Shortcuts, and URL entry points.
+- `QuickRecord/Recorder.swift`: microphone permission, audio sessions, recording, file management, and playback.
+- `QuickRecord/ContentView.swift`: Chinese interface and Action button setup guidance.
+- `QuickRecord/Info.plist`: microphone usage description, background audio, and URL scheme.
 
-苹果文档：[操作按钮使用指南](https://support.apple.com/guide/iphone/use-and-customize-the-action-button-iphe89d61d66/ios)、[轻点背面](https://support.apple.com/en-us/111772)。
+Apple documentation: [Use and customize the Action button](https://support.apple.com/guide/iphone/use-and-customize-the-action-button-iphe89d61d66/ios), [Use Back Tap](https://support.apple.com/en-us/111772).
