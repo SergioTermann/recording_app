@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>Glimpse</string>
+	<key>CFBundleName</key>
+	<string>Glimpse</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+	<key>CFBundleIconFile</key>
+	<string>Glimpse</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Glimpse 使用 Mac 的麦克风录制生活记录和灵感。</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Glimpse 将录音在本机转换为文字并保存 TXT。</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>在同一 Wi-Fi 下接收已配对 iPhone 的录音和文字进行归档。</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_glimpse-sync._tcp</string>
+	</array>
+</dict>
+</plist>

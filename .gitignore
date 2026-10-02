@@ -1,0 +1,12 @@
+.DS_Store
+build/
+*.xcuserstate
+xcuserdata/
+
+# Local archives and credentials
+/QuickRecord-source.zip
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
